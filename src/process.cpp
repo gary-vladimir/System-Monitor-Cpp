@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "process.h"
+#include "linux_parser.h"
 
 using std::string;
 using std::to_string;
@@ -12,6 +13,7 @@ using std::vector;
 
 Process::Process(int pid){
     pid_ = pid;
+    command_ = LinuxParser::Command(pid);
 }
 
 int Process::Pid() { return pid_; }
