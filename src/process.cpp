@@ -14,6 +14,13 @@ using std::vector;
 Process::Process(int pid){
     pid_ = pid;
     command_ = LinuxParser::Command(pid);
+    string ram = LinuxParser::Ram(pid);
+    ram_ = std::stol(ram);
+    uptime_ = LinuxParser::UpTime(pid);
+    user_ = LinuxParser::User(pid);
+    long totalTime = LinuxParser::ActiveJiffies(pid);
+    long sec = uptime_ LinuxParser::UpTime() - uptime_;
+    try {cpu_utilization_ = float(totalTime) / float(sec);}catch(...){cpu_utilization_ = 0;}
 }
 
 int Process::Pid() { return pid_; }
