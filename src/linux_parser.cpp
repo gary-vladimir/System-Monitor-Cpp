@@ -115,8 +115,27 @@ long LinuxParser::ActiveJiffies(int pid) {
   return result / sysconf(_SC_CLK_TCK); // division added to return active time in seconds instead of raw jiffies.
  }
 
-// TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+// Read and returned the number of active jiffies for the system
+long LinuxParser::ActiveJiffies() { 
+  std::ifstream stream(kProcDirectory + kStatFilename);
+  if(!stream.is_open())return 0;
+  string current_line, key;
+  vector<long> values;
+  while(std::getline(stream, current_line)){
+    std::istringstream line_stream(current_line);
+    line_stream >> key;
+    if(key == "cpu"){
+      long val; cin >> val;
+      while(line_stream >> value)values.push_back(value);
+      break;
+    }
+  }
+
+  if(values.size() >= LinuxParser::CPUStates::kSteal_){
+    return values[LinuxParser::CPUStates::kUser_] + values[LinuxParser::CPUStates::kNice_] + values[LinuxParser::CPUStates::kSystem_] + values[LinuxParser::CPUStates::kIRQ_] + values[LinuxParser::CPUStates::kSoftIRQ_] + values[LinuxParser::CPUStates::kSteal_];
+  }
+  return 0;
+ }
 
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() { return 0; }
