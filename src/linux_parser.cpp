@@ -117,7 +117,8 @@ long LinuxParser::ActiveJiffies(int pid) {
 
 // Read and returned the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() { 
-  auto values = CpuUtilization();
+  auto jiffies = CpuUtilization();
+  vector<long> values; for(auto &e:jiffies)values.push_back(std::stol(e));
   if(values.size() >= LinuxParser::CPUStates::kSteal_){
     return values[LinuxParser::CPUStates::kUser_] + values[LinuxParser::CPUStates::kNice_] + values[LinuxParser::CPUStates::kSystem_] + values[LinuxParser::CPUStates::kIRQ_] + values[LinuxParser::CPUStates::kSoftIRQ_] + values[LinuxParser::CPUStates::kSteal_];
   }
