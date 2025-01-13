@@ -117,20 +117,7 @@ long LinuxParser::ActiveJiffies(int pid) {
 
 // Read and returned the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() { 
-  std::ifstream stream(kProcDirectory + kStatFilename);
-  if(!stream.is_open())return 0;
-  string current_line, key;
-  vector<long> values;
-  while(std::getline(stream, current_line)){
-    std::istringstream line_stream(current_line);
-    line_stream >> key;
-    if(key == "cpu"){
-      long val; cin >> val;
-      while(line_stream >> value)values.push_back(value);
-      break;
-    }
-  }
-
+  auto values = CpuUtilization();
   if(values.size() >= LinuxParser::CPUStates::kSteal_){
     return values[LinuxParser::CPUStates::kUser_] + values[LinuxParser::CPUStates::kNice_] + values[LinuxParser::CPUStates::kSystem_] + values[LinuxParser::CPUStates::kIRQ_] + values[LinuxParser::CPUStates::kSoftIRQ_] + values[LinuxParser::CPUStates::kSteal_];
   }
