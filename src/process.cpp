@@ -19,7 +19,7 @@ Process::Process(int pid){
     uptime_ = LinuxParser::UpTime(pid);
     user_ = LinuxParser::User(pid);
     long totalTime = LinuxParser::ActiveJiffies(pid);
-    long sec = uptime_ LinuxParser::UpTime() - uptime_;
+    long sec = LinuxParser::UpTime() - uptime_;
     try {cpu_utilization_ = float(totalTime) / float(sec);}catch(...){cpu_utilization_ = 0;}
 }
 
@@ -29,7 +29,9 @@ float Process::CpuUtilization() { return cpu_utilization_; }
 
 string Process::Command() { return command_; }
 
-string Process::Ram() { return ram_; }
+string Process::Ram() { return std::to_string(ram_); }
+
+int Process::getRam(){return ram_;}
 
 string Process::User() { return user_; }
 
