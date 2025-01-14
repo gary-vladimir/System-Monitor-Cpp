@@ -192,7 +192,7 @@ string LinuxParser::Command(int pid) {
 // Read and return the memory used by a process
 string LinuxParser::Ram(int pid) { 
   string ram;
-  std::ifstream stream(kProcDirectory + std::to_string(pid) + kCmdlineFilename);
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatusFilename);
   if(!stream.is_open())return "";
   string str;
   while(std::getline(stream, str)){
