@@ -238,7 +238,7 @@ string LinuxParser::User(int pid) {
 
 // Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) { 
-  vector<string>values(30,"0");
+  vector<string>values;
   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatFilename);
   if(stream.is_open()){
     string str, value; std::getline(stream, str);
@@ -247,7 +247,7 @@ long LinuxParser::UpTime(int pid) {
   }
   long result = 0;
   try{
-    result = std::stol(values[21]) / sysconf(_SC_CLK_TCK);
+    if(values.size() > 21) result = std::stol(values[21]) / sysconf(_SC_CLK_TCK);
   }catch(...){
     result = 0;
   }
