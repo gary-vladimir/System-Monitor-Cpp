@@ -201,10 +201,13 @@ string LinuxParser::Ram(int pid) {
     line_stream >> key;
     if(key == "VmSize:"){
       line_stream >> ram;
-      return ram;
+      try{
+      int ram_kb = std::stoi(ram);
+      return std::to_string(ram_kb/1024); // convert to MB
+      }catch(...){return "0";}
     }
   }
-  return ram;
+  return "0";
  }
 
 // Read and return the user ID associated with a process
