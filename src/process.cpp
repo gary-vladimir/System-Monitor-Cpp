@@ -25,7 +25,7 @@ Process::Process(int pid){
 
 int Process::Pid() { return pid_; }
 
-float Process::CpuUtilization() { return cpu_utilization_; }
+float Process::CpuUtilization() const { return cpu_utilization_; }
 
 string Process::Command() { return command_; }
 
