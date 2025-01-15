@@ -25,7 +25,11 @@ Process::Process(int pid){
 
 int Process::Pid() { return pid_; }
 
-float Process::CpuUtilization() const { return cpu_utilization_; }
+float Process::CpuUtilization() const {
+    long total_time = LinuxParser::ActiveJiffies(pid_);
+    long seconds = LinuxParser::UpTime() - LinuxParser::UpTime(pid_);
+    return seconds > 0 ? static_cast<float>(total_time) / seconds : 0.0;
+ }
 
 string Process::Command() { return command_; }
 
